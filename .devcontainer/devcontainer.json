@@ -1,5 +1,5 @@
 {
-  "name": "VM vs Docker Benchmark",
+  "name": "VM-vs-Docker-Benchmark",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",            // coincide con el volumen montado
