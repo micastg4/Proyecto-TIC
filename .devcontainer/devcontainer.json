@@ -1,0 +1,13 @@
+{
+  "name": "VM vs Docker Benchmark",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",            // coincide con el volumen montado
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:1": {}
+  },
+  "runServices": ["mysql"],                  // opcional; mysql ya está en depends_on
+  "shutdownAction": "stopCompose",
+  "forwardPorts": [8888, 3306],              // 3306 útil si quieres conectarte desde fuera
+  "postCreateCommand": "pip install -r requirements.txt || true"
+}

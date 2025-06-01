@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile      # ← ruta real
+    command: sleep infinity               # evita que el contenedor se caiga si Jupyter aún no arrancó
+    ports:
+      - "8888:8888"
+    volumes:
+      - ..:/workspace:cached
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: benchmark
+      MYSQL_PASSWORD: benchmark
+      MYSQL_DB: benchmark_db
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: benchmark_db
+      MYSQL_USER: benchmark
+      MYSQL_PASSWORD: benchmark
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      retries: 5
+
+volumes:
+  mysql_data:
